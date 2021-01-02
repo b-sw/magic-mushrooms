@@ -12,6 +12,7 @@ from enum import Enum
 CLASSIFIER_IDX = 0
 EDIBLE = 'e'
 POISONOUS = 'p'
+READ_FILE = 'r'
 
 
 class Attributes(Enum):  # tak roboczo - mam przeczucie, że się przyda
@@ -37,6 +38,11 @@ class Attributes(Enum):  # tak roboczo - mam przeczucie, że się przyda
     SPORE_PRINT_COLOR = 20
     POPULATION = 21
     HABITAT = 22
+
+
+def get_collection_from_file(file_name):
+    file = open(file_name, READ_FILE)
+    pass
 
 
 class Mushroom:

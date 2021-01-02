@@ -7,8 +7,8 @@
     Warsaw University of Technology
     Faculty of Electronics and Information Technology
 """
-import getopt
 import sys
+from package.inf_gain import *
 
 FILE_NAME_IDX = 0
 ARGC = 1  # source set file name

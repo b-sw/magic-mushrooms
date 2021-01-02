@@ -8,7 +8,7 @@
     Faculty of Electronics and Information Technology
 """
 from math import log2
-from mushroom import *
+from package.mushroom import *
 
 
 def class_proportion(classifier, collection):
