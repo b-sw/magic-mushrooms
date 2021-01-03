@@ -14,6 +14,14 @@ EDIBLE = 'e'
 POISONOUS = 'p'
 
 
+def generate_input_attributes():
+    input_attributes = []
+    for i in range(1, 22):
+        input_attributes.append(i)
+
+    return input_attributes
+
+
 class Attributes(Enum):  # tak roboczo - mam przeczucie, że się przyda
     CAP_SHAPE = 1
     CAP_SURFACE = 2

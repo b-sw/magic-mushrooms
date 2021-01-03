@@ -39,10 +39,21 @@ def class_proportion(classifier, collection):
 
 
 def most_common_class(classifiers, collection):
-    if class_proportion(EDIBLE, collection) > class_proportion(POISONOUS, collection):
-        return EDIBLE
-    else:
-        return POISONOUS
+    best_proportion = class_proportion(classifiers[0], collection)
+    most_common_classifier = classifiers[0]
+
+    for i in range(1, len(classifiers)):
+        tmp_proportion = class_proportion(classifiers[i], collection)
+
+        if tmp_proportion > best_proportion:
+            best_proportion = tmp_proportion
+            most_common_classifier = classifiers[i]
+
+    return most_common_classifier
+
+
+def only_class(collection):
+    return collection[0].attributes[CLASSIFIER_IDX]
 
 
 def possible_values(attribute_idx, collection):
@@ -88,7 +99,6 @@ def entropy(collection):
 
     for i in range(len(classifiers)):
         fi = class_proportion(classifiers[i], collection)  # na wykładzie było oznaczone jako f_i
-        # print(fi)
         if fi != 0:
             eta += -1 * fi * log2(fi)
 
