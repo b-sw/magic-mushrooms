@@ -13,23 +13,23 @@ from package.node import *
 MUSHROOM_ATTR_OFFSET = -1
 
 
-def id3(classifiers, input_attributes, dataset):
-    if is_deterministic(dataset):
-        return only_class(dataset)
+def id3(classifiers, input_attributes, training_set):
+    if is_deterministic(training_set):
+        return only_class(training_set)
 
     elif empty_input(input_attributes):
-        return most_common_class(classifiers, dataset)
+        return most_common_class(classifiers, training_set)
 
     else:
-        d = arg_max_inf_gain(input_attributes, dataset)
-        d_values, sub_datasets = sub_datasets_by_values(d, dataset)
+        d = arg_max_inf_gain(input_attributes, training_set)
+        d_values, subsets = subsets_by_values(d, training_set)
         input_attributes.remove(d)
 
         root = Node(d, d_values)
         sub_nodes = []
 
         for i in range(len(d_values)):
-            sub_nodes.append(id3(classifiers, input_attributes, sub_datasets[i]))
+            sub_nodes.append(id3(classifiers, input_attributes, subsets[i]))
 
         # print('Atrybut nr {}'.format(d))
         # print(sub_nodes)

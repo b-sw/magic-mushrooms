@@ -7,22 +7,23 @@
     Warsaw University of Technology
     Faculty of Electronics and Information Technology
 """
-from math import log2
+from math import log, floor
 from package.mushroom import *
 
+TRAINING_SET_PROPORTION = 0.8
 
 def is_deterministic(collection):
     to_compare = collection[0].attributes[CLASSIFIER_IDX]
 
-    for i in range(1, len(collection)):
-        if collection[i].attributes[CLASSIFIER_IDX] != to_compare:
+    for element in collection:
+        if element.attributes[CLASSIFIER_IDX] != to_compare:
             return False
 
     return True
 
 
 def empty_input(input_attributes):
-    if len(input_attributes) == 0:
+    if not input_attributes:
         return True
     else:
         return False
@@ -31,8 +32,8 @@ def empty_input(input_attributes):
 def class_proportion(classifier, collection):
     samples = 0
 
-    for i in range(len(collection)):
-        if collection[i].attributes[CLASSIFIER_IDX] == classifier:
+    for element in collection:
+        if element.attributes[CLASSIFIER_IDX] == classifier:
             samples += 1
 
     return samples / len(collection)
@@ -59,59 +60,59 @@ def only_class(collection):
 def possible_values(attribute_idx, collection):
     values = []
 
-    for i in range(len(collection)):
-        sample_value = collection[i].attributes[attribute_idx]
+    for element in collection:
+        sample_value = element.attributes[attribute_idx]
         if sample_value not in values:
             values.append(sample_value)
 
     return values
 
 
-def sub_datasets_by_values(attribute, collection):
+def subsets_by_values(attribute, collection):
     values = possible_values(attribute, collection)
-    sub_datasets = []
+    subsets = []
 
-    for i in range(len(values)):
-        sub_datasets.append([])
+    for value in values:
+        subsets.append([])
 
-    for i in range(len(collection)):
-        sample_value = collection[i].attributes[attribute]
-        sub_dataset_idx = values.index(sample_value)
+    for element in collection:
+        sample_value = element.attributes[attribute]
+        subset_idx = values.index(sample_value)
 
-        sub_datasets[sub_dataset_idx].append(collection[i])
+        subsets[subset_idx].append(element)
 
-    return values, sub_datasets
+    return values, subsets
 
 
-def sub_collection_by_attribute(attribute_idx, attribute_value, collection):
-    sub_collection = []
+def subcollection_by_attribute(attribute_idx, attribute_value, collection):
+    subcollection = []
 
     for i in range(len(collection)):
         if collection[i].attributes[attribute_idx] == attribute_value:
-            sub_collection.append(collection[i])
+            subcollection.append(collection[i])
 
-    return sub_collection
+    return subcollection
 
 
 def entropy(collection):
     classifiers = [EDIBLE, POISONOUS]
-    eta = 0  # bo entropia to z definicji H(X), gdzie H to nie 'H', a grecka litera eta
+    eta = 0  # entropia to z definicji eta(X)
 
-    for i in range(len(classifiers)):
-        fi = class_proportion(classifiers[i], collection)  # na wykładzie było oznaczone jako f_i
-        if fi != 0:
-            eta += -1 * fi * log2(fi)
+    for classifier in classifiers:
+        freq = class_proportion(classifier, collection)  # na wykładzie oznaczone jako f_i
+        if freq != 0:
+            eta += freq * log(freq)
 
-    return eta
+    return -eta
 
 
 def entropy_by_attribute(attribute_idx, collection):
     eta = 0
     attribute_values = possible_values(attribute_idx, collection)
 
-    for i in range(len(attribute_values)):
-        sub_collection = sub_collection_by_attribute(attribute_idx, attribute_values[i], collection)
-        eta += len(sub_collection) / len(collection) * entropy(sub_collection)
+    for value in attribute_values:
+        subcollection = subcollection_by_attribute(attribute_idx, value, collection)
+        eta += len(subcollection) / len(collection) * entropy(subcollection)
 
     return eta
 
@@ -132,3 +133,12 @@ def arg_max_inf_gain(input_attributes, dataset):
             best_attribute_idx = i
 
     return input_attributes[best_attribute_idx]
+
+
+def split_dataset(dataset):
+    split_idx = floor(len(dataset) * TRAINING_SET_PROPORTION)
+    training_set = dataset[:split_idx]
+    test_set = dataset[split_idx:]
+
+    return training_set, test_set
+    
