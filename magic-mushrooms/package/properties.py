@@ -7,7 +7,7 @@
     Warsaw University of Technology
     Faculty of Electronics and Information Technology
 """
-from math import log, floor
+from math import log2, floor
 from package.mushroom import *
 
 TRAINING_SET_PROPORTION = 0.8
@@ -101,7 +101,7 @@ def entropy(collection):
     for classifier in classifiers:
         freq = class_proportion(classifier, collection)  # na wykładzie oznaczone jako f_i
         if freq != 0:
-            eta += freq * log(freq)
+            eta += freq * log2(freq)
 
     return -eta
 
