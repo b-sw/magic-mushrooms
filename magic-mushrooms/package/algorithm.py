@@ -10,7 +10,7 @@
 from package.properties import *
 from package.node import *
 
-MUSHROOM_ATTR_OFFSET = -1
+MUSHROOM_ATTR_OFFSET = 0
 
 
 def id3(classifiers, input_attributes, training_set):

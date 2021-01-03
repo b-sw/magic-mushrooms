@@ -141,4 +141,3 @@ def split_dataset(dataset):
     test_set = dataset[split_idx:]
 
     return training_set, test_set
-    
