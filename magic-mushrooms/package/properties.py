@@ -12,6 +12,7 @@ from package.mushroom import *
 
 TRAINING_SET_PROPORTION = 0.8
 
+
 def is_deterministic(collection):
     to_compare = collection[0].attributes[CLASSIFIER_IDX]
 
@@ -87,9 +88,9 @@ def subsets_by_values(attribute, collection):
 def subcollection_by_attribute(attribute_idx, attribute_value, collection):
     subcollection = []
 
-    for i in range(len(collection)):
-        if collection[i].attributes[attribute_idx] == attribute_value:
-            subcollection.append(collection[i])
+    for element in collection:
+        if element.attributes[attribute_idx] == attribute_value:
+            subcollection.append(element)
 
     return subcollection
 
@@ -101,9 +102,9 @@ def entropy(collection):
     for classifier in classifiers:
         freq = class_proportion(classifier, collection)  # na wykładzie oznaczone jako f_i
         if freq != 0:
-            eta += freq * log2(freq)
+            eta += -1 * freq * log2(freq)
 
-    return -eta
+    return eta
 
 
 def entropy_by_attribute(attribute_idx, collection):

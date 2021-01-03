@@ -10,8 +10,6 @@
 from package.properties import *
 from package.node import *
 
-MUSHROOM_ATTR_OFFSET = 0
-
 
 def id3(classifiers, input_attributes, training_set):
     if is_deterministic(training_set):
@@ -31,22 +29,18 @@ def id3(classifiers, input_attributes, training_set):
         for i in range(len(d_values)):
             sub_nodes.append(id3(classifiers, input_attributes, subsets[i]))
 
-        # print('Atrybut nr {}'.format(d))
-        # print(sub_nodes)
-        # print('\n')
-
         root.children = sub_nodes
         return root
 
 
 def predict_edibility(mushroom, decision_tree_root):
     node = decision_tree_root
-    attribute_idx = node.attribute + MUSHROOM_ATTR_OFFSET
+    attribute_idx = node.attribute
     child_idx = node.values.index(mushroom.attributes[attribute_idx])
 
     while node.children[child_idx] not in [EDIBLE, POISONOUS]:
         node = node.children[child_idx]
-        attribute_idx = node.attribute + MUSHROOM_ATTR_OFFSET
+        attribute_idx = node.attribute
         child_idx = node.values.index(mushroom.attributes[attribute_idx])
 
     return node.children[child_idx]
