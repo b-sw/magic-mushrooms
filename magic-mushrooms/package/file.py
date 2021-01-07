@@ -8,7 +8,6 @@
     Faculty of Electronics and Information Technology
 """
 from package.mushroom import *
-from csv import *
 
 READ_FILE = 'r'
 SEPARATOR = ','

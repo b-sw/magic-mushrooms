@@ -7,6 +7,8 @@
     Warsaw University of Technology
     Faculty of Electronics and Information Technology
 """
+LEFT_CHILD = 0
+RIGHT_CHILD = 1
 
 
 class Node:

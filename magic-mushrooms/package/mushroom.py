@@ -22,7 +22,7 @@ def generate_input_attributes():
     return input_attributes
 
 
-class Attributes(Enum):  # tak roboczo - mam przeczucie, że się przyda
+class Attributes(Enum):  # tak roboczo - mam przeczucie, że się przyda // update: chyba jednak nie
     CAP_SHAPE = 1
     CAP_SURFACE = 2
     CAP_COLOR = 3

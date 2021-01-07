@@ -10,6 +10,8 @@
 from package.properties import *
 from package.node import *
 
+BOTH = 2
+
 
 def id3(classifiers, input_attributes, training_set):
     if is_deterministic(training_set):
@@ -26,21 +28,46 @@ def id3(classifiers, input_attributes, training_set):
         root = Node(d, d_values)
         sub_nodes = []
 
-        for i in range(len(d_values)):
-            sub_nodes.append(id3(classifiers, input_attributes, subsets[i]))
+        for subset in subsets:
+            sub_nodes.append(id3(classifiers, input_attributes, subset))
 
+        # print(sub_nodes)
         root.children = sub_nodes
         return root
 
 
 def predict_edibility(mushroom, decision_tree_root):
     node = decision_tree_root
-    attribute_idx = node.attribute
-    child_idx = node.values.index(mushroom.attributes[attribute_idx])
 
-    while node.children[child_idx] not in [EDIBLE, POISONOUS]:
-        node = node.children[child_idx]
+    while True:
         attribute_idx = node.attribute
-        child_idx = node.values.index(mushroom.attributes[attribute_idx])
+
+        if mushroom.attributes[attribute_idx] not in node.values:
+            if majority_classifier(node) > 0:
+                return EDIBLE
+            else:
+                return POISONOUS
+
+        if node.values.index(mushroom.attributes[attribute_idx]) == PRIMARY_VALUE_IDX:
+            child_idx = LEFT_CHILD
+        else:
+            child_idx = RIGHT_CHILD
+
+        if node.children[child_idx] in [EDIBLE, POISONOUS]:
+            break
+
+        node = node.children[child_idx]
 
     return node.children[child_idx]
+
+
+def majority_classifier(node):
+    if node == EDIBLE:
+        return 1
+    elif node == POISONOUS:
+        return -1
+    else:
+        if len(node.children) == BOTH:
+            return majority_classifier(node.children[LEFT_CHILD]) + majority_classifier(node.children[RIGHT_CHILD])
+        else:
+            return majority_classifier(node.children[LEFT_CHILD])

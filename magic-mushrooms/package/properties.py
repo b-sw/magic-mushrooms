@@ -11,6 +11,9 @@ from math import log2, floor
 from package.mushroom import *
 
 TRAINING_SET_PROPORTION = 0.8
+LEFT_SUBSET = 0
+RIGHT_SUBSET = 1
+PRIMARY_VALUE_IDX = 0
 
 
 def is_deterministic(collection):
@@ -71,16 +74,18 @@ def possible_values(attribute_idx, collection):
 
 def subsets_by_values(attribute, collection):
     values = possible_values(attribute, collection)
-    subsets = []
+    subsets = [[]]
 
-    for value in values:
+    if len(values) > 1:
         subsets.append([])
 
     for element in collection:
         sample_value = element.attributes[attribute]
-        subset_idx = values.index(sample_value)
 
-        subsets[subset_idx].append(element)
+        if values.index(sample_value) == PRIMARY_VALUE_IDX:
+            subsets[LEFT_SUBSET].append(element)
+        else:
+            subsets[RIGHT_SUBSET].append(element)
 
     return values, subsets
 
@@ -136,8 +141,8 @@ def arg_max_inf_gain(input_attributes, dataset):
     return input_attributes[best_attribute_idx]
 
 
-def split_dataset(dataset):
-    split_idx = floor(len(dataset) * TRAINING_SET_PROPORTION)
+def split_dataset(dataset, proportion):
+    split_idx = floor(len(dataset) * proportion)
     training_set = dataset[:split_idx]
     test_set = dataset[split_idx:]
 
