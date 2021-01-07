@@ -8,10 +8,11 @@
     Faculty of Electronics and Information Technology
 """
 from tests.predict_test import *
+from package.visuals import *
 
 
 def main():
-    predict_test()
+    plot_graph(TEST_PROPORTIONS, predict_test())
 
 
 if __name__ == '__main__':
