@@ -17,9 +17,7 @@ SCALE = 100
 
 
 def predict_test():
-    dataset_file_name = PATH + DATASET_FILE_NAME
-
-    dataset = read_dataset_from_file(dataset_file_name)
+    dataset = read_dataset_from_file(DATASET_FILE_NAME)
     classifiers = [EDIBLE, POISONOUS]
 
     accuracies = []
