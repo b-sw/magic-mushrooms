@@ -17,7 +17,6 @@ WIDTH = 0.1
 def plot_graph(proportions, accuracies):
     fig, ax = plt.subplots()
 
-    ax.set_title('Accuracies')
     ax.set_xlabel('Proportion')
     ax.set_ylabel('Accuracy[%]')
 

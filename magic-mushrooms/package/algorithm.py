@@ -23,6 +23,8 @@ def id3(classifiers, input_attributes, training_set, classifier_idx):
     else:
         d = arg_max_inf_gain(input_attributes, training_set, classifiers, classifier_idx)
         d_values, subsets = binary_tests(d, training_set)
+        # print(d)
+        # print(d_values)
         input_attributes.remove(d)
 
         root = Node(d, d_values)
@@ -31,7 +33,6 @@ def id3(classifiers, input_attributes, training_set, classifier_idx):
         for subset in subsets:  # dwa pozdbiory
             sub_nodes.append(id3(classifiers, input_attributes, subset, classifier_idx))
 
-        # print(sub_nodes)
         root.children = sub_nodes
         return root
 

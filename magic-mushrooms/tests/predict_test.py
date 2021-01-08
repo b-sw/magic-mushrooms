@@ -20,7 +20,7 @@ def predict_test(file_name, classifier_idx, separator, proportion):
     classifiers = dictionary[classifier_idx]
 
     print('Test set / data set proportion:\t{}'.format(proportion))
-    input_attributes = generate_input_attributes(dictionary)
+    input_attributes = generate_input_attributes(dictionary, classifier_idx)
 
     training_set, test_set = split_dataset(dataset, proportion)
     decision_tree = id3(classifiers, input_attributes, training_set, classifier_idx)
