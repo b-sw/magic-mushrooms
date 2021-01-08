@@ -8,7 +8,6 @@
     Faculty of Electronics and Information Technology
 """
 from math import log2, floor
-from package.mushroom import *
 
 TRAINING_SET_PROPORTION = 0.8
 LEFT_SUBSET = 0
@@ -16,11 +15,11 @@ RIGHT_SUBSET = 1
 PRIMARY_VALUE_IDX = 0
 
 
-def is_deterministic(collection):
-    to_compare = collection[0].attributes[CLASSIFIER_IDX]
+def is_deterministic(collection, classifier_idx):
+    to_compare = collection[0].attributes[classifier_idx]
 
     for element in collection:
-        if element.attributes[CLASSIFIER_IDX] != to_compare:
+        if element.attributes[classifier_idx] != to_compare:
             return False
 
     return True
@@ -33,22 +32,22 @@ def empty_input(input_attributes):
         return False
 
 
-def class_proportion(classifier, collection):
+def class_proportion(classifier, collection, classifier_idx):
     samples = 0
 
     for element in collection:
-        if element.attributes[CLASSIFIER_IDX] == classifier:
+        if element.attributes[classifier_idx] == classifier:
             samples += 1
 
     return samples / len(collection)
 
 
-def most_common_class(classifiers, collection):
-    best_proportion = class_proportion(classifiers[0], collection)
+def most_common_class(classifiers, collection, classifier_idx):
+    best_proportion = class_proportion(classifiers[0], collection, classifier_idx)
     most_common_classifier = classifiers[0]
 
     for i in range(1, len(classifiers)):
-        tmp_proportion = class_proportion(classifiers[i], collection)
+        tmp_proportion = class_proportion(classifiers[i], collection, classifier_idx)
 
         if tmp_proportion > best_proportion:
             best_proportion = tmp_proportion
@@ -57,8 +56,8 @@ def most_common_class(classifiers, collection):
     return most_common_classifier
 
 
-def only_class(collection):
-    return collection[0].attributes[CLASSIFIER_IDX]
+def only_class(collection, classifier_idx):
+    return collection[0].attributes[classifier_idx]
 
 
 def possible_values(attribute_idx, collection):
@@ -72,7 +71,7 @@ def possible_values(attribute_idx, collection):
     return values
 
 
-def subsets_by_values(attribute, collection):
+def binary_tests(attribute, collection):
     values = possible_values(attribute, collection)
     subsets = [[]]
 
@@ -100,39 +99,39 @@ def subcollection_by_attribute(attribute_idx, attribute_value, collection):
     return subcollection
 
 
-def entropy(collection):
-    classifiers = [EDIBLE, POISONOUS]
+def entropy(collection, classifiers, classifier_idx):
     eta = 0  # entropia to z definicji eta(X)
 
     for classifier in classifiers:
-        freq = class_proportion(classifier, collection)  # na wykładzie oznaczone jako f_i
+        freq = class_proportion(classifier, collection, classifier_idx)  # na wykładzie oznaczone jako f_i
         if freq != 0:
             eta += -1 * freq * log2(freq)
 
     return eta
 
 
-def entropy_by_attribute(attribute_idx, collection):
+def entropy_by_attribute(attribute_idx, collection, classifiers, classifier_idx):
     eta = 0
     attribute_values = possible_values(attribute_idx, collection)
 
     for value in attribute_values:
         subcollection = subcollection_by_attribute(attribute_idx, value, collection)
-        eta += len(subcollection) / len(collection) * entropy(subcollection)
+        eta += len(subcollection) / len(collection) * entropy(subcollection, classifiers, classifier_idx)
 
     return eta
 
 
-def inf_gain(attribute_idx, collection):
-    return entropy(collection) - entropy_by_attribute(attribute_idx, collection)
+def inf_gain(attribute_idx, collection, classifiers, classifier_idx):
+    return entropy(collection, classifiers, classifier_idx) - entropy_by_attribute(attribute_idx, collection,
+                                                                                   classifiers, classifier_idx)
 
 
-def arg_max_inf_gain(input_attributes, dataset):
+def arg_max_inf_gain(input_attributes, dataset, classifiers, classifier_idx):
     best_attribute_idx = 0
     best_inf_gain = 0
 
     for i in range(1, len(input_attributes)):
-        current_inf_gain = inf_gain(i, dataset)
+        current_inf_gain = inf_gain(i, dataset, classifiers, classifier_idx)
 
         if current_inf_gain > best_inf_gain:
             best_inf_gain = current_inf_gain

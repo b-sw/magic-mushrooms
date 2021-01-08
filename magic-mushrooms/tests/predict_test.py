@@ -12,29 +12,25 @@ from package.algorithm import *
 
 DATASET_FILE_NAME = 'agaricus-lepiota.data'
 DECIMAL_POINTS = 2
-TEST_PROPORTIONS = [0.3, 0.5, 0.75, 0.8, 0.9]
 SCALE = 100
 
 
-def predict_test():
-    dataset = read_dataset_from_file(DATASET_FILE_NAME)
-    classifiers = [EDIBLE, POISONOUS]
+def predict_test(file_name, classifier_idx, separator, proportion):
+    dataset, dictionary = read_dataset_from_file(file_name, separator)
+    classifiers = dictionary[classifier_idx]
 
-    accuracies = []
+    print('Test set / data set proportion:\t{}'.format(proportion))
+    input_attributes = generate_input_attributes(dictionary)
 
-    for proportion in TEST_PROPORTIONS:
-        print('Test set / data set proportion:\t{}'.format(proportion))
-        input_attributes = generate_input_attributes()
-        training_set, test_set = split_dataset(dataset, proportion)
+    training_set, test_set = split_dataset(dataset, proportion)
+    decision_tree = id3(classifiers, input_attributes, training_set, classifier_idx)
 
-        decision_tree = id3(classifiers, input_attributes, training_set)
+    correct_predictions = 0
+    for sample in test_set:
+        if predict_classifier(sample, decision_tree, dictionary, classifier_idx) == sample.attributes[classifier_idx]:
+            correct_predictions += 1
 
-        correct_predictions = 0
-        for sample in test_set:
-            if predict_edibility(sample, decision_tree) == sample.attributes[0]:
-                correct_predictions += 1
+    accuracy = (round(correct_predictions / len(test_set), DECIMAL_POINTS) * SCALE)
+    print('Accuracy:\t{}'.format(round(correct_predictions / len(test_set), DECIMAL_POINTS)))
 
-        accuracies.append(round(correct_predictions / len(test_set), DECIMAL_POINTS) * SCALE)
-        print('Accuracy:\t{}'.format(round(correct_predictions / len(test_set), DECIMAL_POINTS)))
-
-    return accuracies
+    return accuracy
