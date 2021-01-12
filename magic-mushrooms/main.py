@@ -11,7 +11,7 @@ import sys
 from tests.predict_test import *
 from package.visuals import *
 
-ARGC = 4
+ARGC = 6
 
 
 def main():
@@ -21,15 +21,19 @@ def main():
         1 - classifier index
         2 - attribute separator
         3 - set split proportion
+        4 - k for k-validation
+        5 - number of runs
     """
     if len(argv) == ARGC:
         file_name = argv[0]
         classifier_idx = int(argv[1])
         separator = argv[2]
         set_split_proportion = float(argv[3])
-        predict_test(file_name, classifier_idx, separator, set_split_proportion)
+        k = int(argv[4])
+        runs = int(argv[5])
+        predict_test_k_validate(file_name, classifier_idx, separator, k, runs)
     else:
-        print('wrong arguments')
+        predict_test_k_validate('agaricus-lepiota.data', 0, ',', 4, 5)
 
 
 if __name__ == '__main__':

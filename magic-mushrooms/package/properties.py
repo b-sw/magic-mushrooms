@@ -57,7 +57,11 @@ def most_common_class(classifiers, collection, classifier_idx):
 
 
 def only_class(collection, classifier_idx):
-    return collection[0].attributes[classifier_idx]
+    how_many = 0
+    for _ in collection:
+        how_many += 1
+
+    return collection[0].attributes[classifier_idx], how_many
 
 
 def possible_values(attribute_idx, collection):
@@ -75,12 +79,13 @@ def binary_tests(attribute, collection):
     values = possible_values(attribute, collection)
     subsets = [[]]
 
+    # print(values)
+
     if len(values) > 1:
         subsets.append([])
 
     for element in collection:
         sample_value = element.attributes[attribute]
-
         if values.index(sample_value) == PRIMARY_VALUE_IDX:
             subsets[LEFT_SUBSET].append(element)
         else:
@@ -130,14 +135,17 @@ def arg_max_inf_gain(input_attributes, dataset, classifiers, classifier_idx):
     best_attribute_idx = 0
     best_inf_gain = 0
 
-    for i in range(1, len(input_attributes)):
+    # print(input_attributes)
+    for i in input_attributes:
         current_inf_gain = inf_gain(i, dataset, classifiers, classifier_idx)
+        # print(current_inf_gain)
 
         if current_inf_gain > best_inf_gain:
             best_inf_gain = current_inf_gain
             best_attribute_idx = i
 
-    return input_attributes[best_attribute_idx]
+    # print('koniec raz')
+    return best_attribute_idx
 
 
 def split_dataset(dataset, proportion):

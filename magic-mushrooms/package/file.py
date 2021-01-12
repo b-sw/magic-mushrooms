@@ -11,7 +11,7 @@ from package.sample import *
 
 READ_FILE = 'r'
 PATH = '../data/'
-EMPTY_LIST = []
+# EMPTY_LIST = []
 
 
 def read_dataset_from_file(file_name, separator):
@@ -25,7 +25,7 @@ def read_dataset_from_file(file_name, separator):
 
             if not dictionary:  # jeśli pusty słownik
                 for _ in attributes:
-                    dictionary.append(EMPTY_LIST)
+                    dictionary.append([])
 
             for i in range(len(attributes)):
                 if attributes[i] not in dictionary[i]:

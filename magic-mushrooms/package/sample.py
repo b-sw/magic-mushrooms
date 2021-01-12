@@ -12,7 +12,7 @@
 def generate_input_attributes(dictionary, classifier_idx):
     input_attributes = []
     for i in range(len(dictionary)):
-        if i is not classifier_idx:  # and i not in []
+        if i is not classifier_idx:
             input_attributes.append(i)
 
     return input_attributes

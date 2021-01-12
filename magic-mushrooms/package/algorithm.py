@@ -13,25 +13,31 @@ from package.node import *
 BOTH = 2
 
 
-def id3(classifiers, input_attributes, training_set, classifier_idx):
+def id3(classifiers, input_attributes, training_set, classifier_idx, depth):
     if is_deterministic(training_set, classifier_idx):
-        return only_class(training_set, classifier_idx)
+        final_class = only_class(training_set, classifier_idx)
+        # print(' : {} ({})'.format(final_class[0], final_class[1]), end='')
+        return final_class[0]
 
     elif empty_input(input_attributes):
-        return most_common_class(classifiers, training_set, classifier_idx)
+        final_class = most_common_class(classifiers, training_set, classifier_idx)
+        # print(' : {}'.format(final_class), end='')
+        return final_class
 
     else:
         d = arg_max_inf_gain(input_attributes, training_set, classifiers, classifier_idx)
         d_values, subsets = binary_tests(d, training_set)
-        # print(d)
-        # print(d_values)
-        input_attributes.remove(d)
+        # draw_depth = ''
+        # for _ in range(depth):
+        #     draw_depth += '| '
 
-        root = Node(d, d_values)
+        root = Node(d, d_values, depth)
         sub_nodes = []
 
-        for subset in subsets:  # dwa pozdbiory
-            sub_nodes.append(id3(classifiers, input_attributes, subset, classifier_idx))
+        # print('\n{}{} = {}'.format(draw_depth, ATTRS[d], d_values[0]), end='')
+        sub_nodes.append(id3(classifiers, input_attributes, subsets[LEFT_SUBSET], classifier_idx, depth + 1))
+        # print('\n{}{} != {}'.format(draw_depth, ATTRS[d], d_values[0]), end='')
+        sub_nodes.append(id3(classifiers, input_attributes, subsets[RIGHT_SUBSET], classifier_idx, depth + 1))
 
         root.children = sub_nodes
         return root
@@ -67,9 +73,9 @@ def majority_classifier(node, classifiers):
     count_classifiers(node, classifiers, count_array)
 
     most_common_classifier = 0
-    for value in count_array:
-        if value > most_common_classifier:
-            most_common_classifier = value
+    for i in range(len(count_array)):
+        if count_array[i] > most_common_classifier:
+            most_common_classifier = i
 
     return classifiers[most_common_classifier]
 
