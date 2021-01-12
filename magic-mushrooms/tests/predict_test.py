@@ -89,7 +89,7 @@ def k_validate(dataset, dictionary, classifier_idx, input_attributes, k):
         accuracy = correct_predictions / len(test_set)
         accuracies += accuracy
 
-        print('\n')
+        # print('\n')
 
     accuracies /= k
 
