@@ -15,5 +15,14 @@ Przewidywanie czy [grzyb](https://archive.ics.uci.edu/ml/datasets/mushroom) jest
 
 ## Run guide
 ```
-todo
+/magic-mushrooms
+
+cd magic-mushrooms/
+python3 main.py <file> <index> <separator> 
+<k> <runs>
 ```
+**file** - file to read data from (inside data/ directory)  
+**index** - position of the classifier in the attributes  
+**separator** - separator used in the file  
+**k** - value of k for k-fold cross-validation  
+**runs** - number of test runs, average outcome of all the test runs will be displayed  
