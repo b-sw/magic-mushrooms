@@ -1,6 +1,6 @@
 """
-    Name:
-    Purpose:
+    Name: sample.py
+    Purpose: sample class definition
 
     @author Bartosz Świtalski, Piotr Frątczak
 

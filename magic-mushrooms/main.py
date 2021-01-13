@@ -1,6 +1,6 @@
 """
-    Name:
-    Purpose:
+    Name: main.py
+    Purpose: main module
 
     @author Bartosz Świtalski, Piotr Frątczak
 
@@ -9,7 +9,6 @@
 """
 import sys
 from tests.predict_test import *
-from package.visuals import *
 
 ARGC = 5
 
@@ -31,7 +30,7 @@ def main():
         runs = int(argv[4])
         predict_test_k_validate(file_name, classifier_idx, separator, k, runs)
     else:
-        predict_test_k_validate('agaricus-lepiota.data', 0, ',', 4, 5)
+        predict_test_k_validate('agaricus-lepiota.data', 0, ',', 4, 3)
 
 
 if __name__ == '__main__':

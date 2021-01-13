@@ -1,6 +1,6 @@
 """
-    Name:
-    Purpose:
+    Name: properties.py
+    Purpose: set properties definitions
 
     @author Bartosz Świtalski, Piotr Frątczak
 
@@ -57,11 +57,7 @@ def most_common_class(classifiers, collection, classifier_idx):
 
 
 def only_class(collection, classifier_idx):
-    how_many = 0
-    for _ in collection:
-        how_many += 1
-
-    return collection[0].attributes[classifier_idx], how_many
+    return collection[0].attributes[classifier_idx]
 
 
 def possible_values(attribute_idx, collection):

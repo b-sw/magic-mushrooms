@@ -1,6 +1,6 @@
 """
-    Name:
-    Purpose:
+    Name: file.py
+    Purpose: file read implementation
 
     @author Bartosz Świtalski, Piotr Frątczak
 

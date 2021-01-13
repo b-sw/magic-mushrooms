@@ -1,6 +1,6 @@
 """
-    Name:
-    Purpose:
+    Name: predict_test.py
+    Purpose: test building of binary tree and prediction of edibility
 
     @author Bartosz Świtalski, Piotr Frątczak
 
@@ -11,7 +11,6 @@ from random import shuffle
 from package.file import *
 from package.algorithm import *
 
-DATASET_FILE_NAME = 'agaricus-lepiota.data'
 DECIMAL_POINTS = 2
 SCALE = 100
 BEGIN_DEPTH = 0
@@ -24,6 +23,10 @@ EDIBLE = 'e'
 POISONOUS = 'p'
 MEAN_IDX = 0
 MATRIX_IDX = 1
+ATTRS = ['edible', 'cap-shape', 'cap-surface', 'cap-color', 'bruises', 'odor', 'gill-attachment',
+         'gill-spacing', 'gill-size', 'gill-color', 'stalk-shape', 'stalk-root', 'stalk-surface-above-ring',
+         'stalk-surface-below-ring', 'stalk-color-above-ring', 'stalk-color-below-ring', 'veil-type',
+         'veil-color', 'ring-number', 'ring-type', 'spore-print-color', 'population', 'habitat']
 
 
 def predict_test_k_validate(file_name, classifier_idx, separator, k, runs):
@@ -48,6 +51,10 @@ def predict_test_k_validate(file_name, classifier_idx, separator, k, runs):
     print('K-value:\t {}'.format(k))
     print('Average accuracy:\t{}'.format(round(mean_accuracy * 100, DECIMAL_POINTS)))
     print('Average confusion matrix([TP, FN, FP, TN]):\t {}'.format(mean_confusion_matrix))
+
+    # draw final binary tree
+    # print('\nFinal decision tree')
+    # final_decision_tree = id3(dictionary[classifier_idx], input_attributes, dataset, classifier_idx, BEGIN_DEPTH)
 
 
 def k_validate(dataset, dictionary, classifier_idx, input_attributes, k):
@@ -89,7 +96,7 @@ def k_validate(dataset, dictionary, classifier_idx, input_attributes, k):
         accuracy = correct_predictions / len(test_set)
         accuracies += accuracy
 
-        # print('\n')
+        print('\n')
 
     accuracies /= k
 

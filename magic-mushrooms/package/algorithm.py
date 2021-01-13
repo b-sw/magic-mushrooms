@@ -1,6 +1,6 @@
 """
-    Name:
-    Purpose:
+    Name: algorithm.py
+    Purpose: main algorithms definitions
 
     @author Bartosz Świtalski, Piotr Frątczak
 
@@ -16,8 +16,8 @@ BOTH = 2
 def id3(classifiers, input_attributes, training_set, classifier_idx, depth):
     if is_deterministic(training_set, classifier_idx):
         final_class = only_class(training_set, classifier_idx)
-        # print(' : {} ({})'.format(final_class[0], final_class[1]), end='')
-        return final_class[0]
+        # print(' : {} ({})'.format(final_class, len(training_set)), end='')
+        return final_class
 
     elif empty_input(input_attributes):
         final_class = most_common_class(classifiers, training_set, classifier_idx)
